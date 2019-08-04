@@ -1,6 +1,7 @@
 package com.hider.order.service;
 
 import com.hider.order.dataobject.ProductInfo;
+import com.hider.order.dto.CartDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,8 +20,9 @@ public interface ProductService {
 
     ProductInfo save(ProductInfo productInfo);
 
-    //todo 加库存
+    //加库存
+    void increaseStock(List<CartDTO> cartDTOList);
 
-    //todo 减库存
-
+    //减库存
+    void decreaseStock(List<CartDTO> cartDTOList);
 }
