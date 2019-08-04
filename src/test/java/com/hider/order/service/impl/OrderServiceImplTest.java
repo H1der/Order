@@ -2,6 +2,8 @@ package com.hider.order.service.impl;
 
 import com.hider.order.dataobject.OrderDetail;
 import com.hider.order.dto.OrderDTO;
+import com.hider.order.enums.OrderStatusEnum;
+import com.hider.order.enums.PayStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
@@ -23,7 +25,7 @@ public class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     public final String BUYER_OPENID = "110110";
-    public final String ORDER_ID = "1564915048715500167";
+    public final String ORDER_ID = "1564915318817120382";
 
     @Test
     public void create() {
@@ -64,13 +66,22 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancel() {
+        OrderDTO orderDTO = orderService.findById(ORDER_ID);
+        OrderDTO result = orderService.cancel(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.CANCEL.getCode(), result.getOrderStatus());
     }
 
     @Test
     public void finish() {
+        OrderDTO orderDTO = orderService.findById(ORDER_ID);
+        OrderDTO result = orderService.finish(orderDTO);
+        Assert.assertEquals(OrderStatusEnum.FINISHED.getCode(), result.getOrderStatus());
     }
 
     @Test
     public void paid() {
+        OrderDTO orderDTO = orderService.findById(ORDER_ID);
+        OrderDTO result = orderService.paid(orderDTO);
+        Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(), result.getPayStatus());
     }
 }
