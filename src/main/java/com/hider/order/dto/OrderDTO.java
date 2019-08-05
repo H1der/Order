@@ -1,6 +1,8 @@
 package com.hider.order.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hider.order.dataobject.OrderDetail;
+import com.hider.order.utils.serializer.Date2LongSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -33,9 +35,11 @@ public class OrderDTO {
     private Integer payStatus;
 
     //创建时间
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date createTime;
 
     //修改时间
+    @JsonSerialize(using = Date2LongSerializer.class)
     private Date updateTime;
 
     List<OrderDetail> orderDetailList;
