@@ -3,6 +3,7 @@ package com.hider.order.dataobject;
 import com.hider.order.enums.OrderStatusEnum;
 import com.hider.order.enums.PayStatusEnum;
 import lombok.Data;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import java.util.Date;
 
 @Entity
 @Data
+@DynamicInsert
 @DynamicUpdate
 public class OrderMaster {
     //订单id

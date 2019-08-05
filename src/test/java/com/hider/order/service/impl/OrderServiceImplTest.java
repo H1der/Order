@@ -25,7 +25,7 @@ public class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     public final String BUYER_OPENID = "110110";
-    public final String ORDER_ID = "1564915318817120382";
+    public final String ORDER_ID = "1564973915787813210";
 
     @Test
     public void create() {
