@@ -64,6 +64,14 @@ public class BuyerOrderController {
     }
 
     //订单详情
+    @GetMapping("/detail")
+    public ResultVO<OrderDTO> detail(@RequestParam("openid") String openid,
+                                     @RequestParam("orderId") String orderId) {
+        //todo
+        OrderDTO orderDTO = orderService.findById(orderId);
+        return ResultVOUtil.success(orderDTO);
+
+    }
 
     //取消订单
 }
