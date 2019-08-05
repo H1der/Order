@@ -6,6 +6,7 @@ import com.hider.order.dataobject.ResultEnum;
 import com.hider.order.dto.OrderDTO;
 import com.hider.order.exception.SellException;
 import com.hider.order.form.OrderForm;
+import com.hider.order.service.BuyerService;
 import com.hider.order.service.OrderService;
 import com.hider.order.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ import java.util.Map;
 public class BuyerOrderController {
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private BuyerService buyerService;
 
     //创建订单
     @PostMapping("/create")
@@ -68,7 +71,7 @@ public class BuyerOrderController {
     public ResultVO<OrderDTO> detail(@RequestParam("openid") String openid,
                                      @RequestParam("orderId") String orderId) {
         //todo
-        OrderDTO orderDTO = orderService.findById(orderId);
+        OrderDTO orderDTO = buyerService.findOrderById(openid, orderId);
         return ResultVOUtil.success(orderDTO);
 
     }
@@ -78,8 +81,7 @@ public class BuyerOrderController {
     public ResultVO cancel(@RequestParam("openid") String openid,
                            @RequestParam("orderId") String orderId) {
         //todo
-        OrderDTO orderDTO = orderService.findById(orderId);
-        orderService.cancel(orderDTO);
+        buyerService.cancelOrder(openid, orderId);
         return ResultVOUtil.success();
     }
 }
