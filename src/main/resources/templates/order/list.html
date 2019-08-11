@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-theme.min.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+</head>
+<body>
+<!--<h1 th:text="${orderDTOPage.totalPages}"></h1>-->
+<!--<div th:each="orderDTO :${orderDTOPage.content}">-->
+<!--    <p th:text="${orderDTO.orderId}"></p>-->
+<!--</div>-->
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>订单id</th>
+                    <th>姓名</th>
+                    <th>手机号</th>
+                    <th>地址</th>
+                    <th>金额</th>
+                    <th>订单状态</th>
+                    <th>支付状态</th>
+                    <th>创建时间</th>
+                    <th colspan="2">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="orderDTO :${orderDTOPage.content}">
+                    <td th:text="${orderDTO.orderId}"></td>
+                    <td th:text="${orderDTO.buyerName}"></td>
+                    <td th:text="${orderDTO.buyerPhone}"></td>
+                    <td th:text="${orderDTO.buyerAddress}"></td>
+                    <td th:text="${orderDTO.orderAmount}"></td>
+                    <td th:text="${orderDTO.orderStatus}"></td>
+                    <td th:text="${orderDTO.payStatus}"></td>
+                    <td th:text="${orderDTO.createTime}"></td>
+                    <td>详情</td>
+                    <td>取消</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
