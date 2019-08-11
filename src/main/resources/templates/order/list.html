@@ -36,8 +36,9 @@
                     <td th:text="${orderDTO.getOrderStatusEnum().message}"></td>
                     <td th:text="${orderDTO.getPayStatusEnum().message}"></td>
                     <td th:text="${orderDTO.createTime}"></td>
-                    <td>详情</td>
-                    <td>取消</td>
+                    <td><a th:href="@{'/seller/order/detail?orderId='+${orderDTO.orderId}}">详情</a></td>
+                    <td><a th:if="${orderDTO.getOrderStatusEnum().message}=='新订单'"
+                           th:href="@{'/seller/order/cancel?orderId='+${orderDTO.orderId}}">取消</a></td>
                 </tr>
                 </tbody>
             </table>

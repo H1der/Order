@@ -1,7 +1,10 @@
 package com.hider.order.controller;
 
+import com.hider.order.dataobject.ResultEnum;
 import com.hider.order.dto.OrderDTO;
+import com.hider.order.exception.SellException;
 import com.hider.order.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/seller/order")
+@Slf4j
 public class SellerOrderController {
 
     @Autowired
@@ -36,5 +40,49 @@ public class SellerOrderController {
         model.addAttribute("currentPage", page);
         return "order/list";
 
+    }
+
+    /**
+     * 取消订单
+     *
+     * @param orderId
+     * @return
+     */
+    @GetMapping("/cancel")
+    public String cancel(@RequestParam("orderId") String orderId, Model model) {
+        try {
+            OrderDTO orderDTO = orderService.findById(orderId);
+            orderService.cancel(orderDTO);
+        } catch (SellException e) {
+            log.error("[卖家端订单取消]发生异常 {}", e);
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("url", "/order/seller/order/list");
+            return "common/error";
+        }
+        model.addAttribute("msg", ResultEnum.ORDER_CANNEL_SUCCESS.getMessage());
+        model.addAttribute("url", "/order/seller/order/list");
+        return "common/success";
+    }
+
+    /**
+     * 订单详情
+     *
+     * @param orderId
+     * @param model
+     * @return
+     */
+    @GetMapping("/detail")
+    public String detail(@RequestParam("orderId") String orderId, Model model) {
+        OrderDTO orderDTO = new OrderDTO();
+        try {
+            orderDTO = orderService.findById(orderId);
+        } catch (SellException e) {
+            log.error("[卖家端订单详情]发生异常 {}", e);
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("url", "/order/seller/order/list");
+            return "common/error";
+        }
+        model.addAttribute("orderDTO", orderDTO);
+        return "order/detail";
     }
 }
