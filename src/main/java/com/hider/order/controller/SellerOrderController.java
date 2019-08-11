@@ -85,4 +85,28 @@ public class SellerOrderController {
         model.addAttribute("orderDTO", orderDTO);
         return "order/detail";
     }
+
+    /**
+     * 订单完结
+     *
+     * @param orderId
+     * @param model
+     * @return
+     */
+    @GetMapping("/finish")
+    public String finished(@RequestParam("orderId") String orderId, Model model) {
+        try {
+            OrderDTO orderDTO = orderService.findById(orderId);
+            orderService.finish(orderDTO);
+        } catch (SellException e) {
+            log.error("[卖家端订单完结]发生异常 {}", e);
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("url", "/order/seller/order/list");
+            return "common/error";
+        }
+        model.addAttribute("msg", ResultEnum.ORDER_FINISH_SUCCESS.getMessage());
+        model.addAttribute("url", "/order/seller/order/list");
+        return "common/success";
+
+    }
 }
