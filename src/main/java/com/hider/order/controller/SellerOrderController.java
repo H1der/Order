@@ -33,6 +33,7 @@ public class SellerOrderController {
         PageRequest request = PageRequest.of(page - 1, size);
         Page<OrderDTO> orderDTOPage = orderService.findList(request);
         model.addAttribute("orderDTOPage", orderDTOPage);
+        model.addAttribute("currentPage", page);
         return "order/list";
 
     }

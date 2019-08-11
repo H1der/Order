@@ -44,15 +44,18 @@
         </div>
         <nav aria-label="Page navigation">
             <ul class="pagination  pull-right">
-                <li>
-                    <a href="#" aria-label="Previous">
+                <li th:class="${currentPage<=1 ? 'disabled' : ''}">
+                    <a aria-label="Previous"
+                       th:href="@{'/seller/order/list?page='+${currentPage-1}}">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li th:each="index:${#numbers.sequence(1,orderDTOPage.getTotalPages())}"><a href="#"
-                                                                                            th:text="${index}"></a></li>
-                <li>
-                    <a href="#" aria-label="Next">
+                <li th:each="index:${#numbers.sequence(1,orderDTOPage.getTotalPages())}"
+                    th:class="${currentPage==index ? 'disabled' : ''}">
+                    <a th:href="@{'/seller/order/list?page='+${index}}" th:text="${index}"></a>
+                </li>
+                <li th:class="${currentPage >= orderDTOPage.getTotalPages() ? 'disabled' : ''}">
+                    <a th:href="@{'/seller/order/list?page='+${currentPage+1}}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
