@@ -1,6 +1,7 @@
 package com.hider.order.controller;
 
 import com.hider.order.dataobject.ProductInfo;
+import com.hider.order.exception.SellException;
 import com.hider.order.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -38,5 +39,47 @@ public class SellerProductController {
         model.addAttribute("productInfoPage", productInfoPage);
         model.addAttribute("currentPage", page);
         return "product/list";
+    }
+
+    /**
+     * 商品上架
+     *
+     * @param productId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/on_sale")
+    public String onSale(@RequestParam("productId") String productId, Model model) {
+        try {
+            productService.onSale(productId);
+        } catch (SellException e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("url", "/order/seller/product/list");
+            return "common/error";
+        }
+        model.addAttribute("url", "/order/seller/product/list");
+        return "common/success";
+
+    }
+
+    /**
+     * 商品下架
+     *
+     * @param productId
+     * @param model
+     * @return
+     */
+    @RequestMapping("/off_sale")
+    public String offSale(@RequestParam("productId") String productId, Model model) {
+        try {
+            productService.offSale(productId);
+        } catch (SellException e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("url", "/order/seller/product/list");
+            return "common/error";
+        }
+        model.addAttribute("url", "/order/seller/product/list");
+        return "common/success";
+
     }
 }

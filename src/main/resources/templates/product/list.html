@@ -47,9 +47,9 @@
                             <td><a th:href="@{'/seller/product/index?productId='+${productInfo.productId}}">修改</a></td>
                             <td th:switch="${productInfo.getProductStatusEnum().message}">
                                 <a th:case="上架"
-                                   th:href="@{'/seller/order/off_sale?productId='+${productInfo.productId}}">下架</a>
+                                   th:href="@{'/seller/product/off_sale?productId='+${productInfo.productId}}">下架</a>
                                 <a th:case="下架"
-                                   th:href="@{'/seller/order/on_sale?productId='+${productInfo.productId}}">上架</a>
+                                   th:href="@{'/seller/product/on_sale?productId='+${productInfo.productId}}">上架</a>
                             </td>
                         </tr>
                         </tbody>
