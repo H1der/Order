@@ -5,63 +5,71 @@
     <title>订单列表</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-theme.min.css}">
-    <script type="text/javascript" th:src="@{/js/jquery-3.4.1.min.js}"></script>
-    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span12">
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>订单id</th>
-                    <th>姓名</th>
-                    <th>手机号</th>
-                    <th>地址</th>
-                    <th>金额</th>
-                    <th>订单状态</th>
-                    <th>支付状态</th>
-                    <th>创建时间</th>
-                    <th colspan="2">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="orderDTO :${orderDTOPage.content}">
-                    <td th:text="${orderDTO.orderId}"></td>
-                    <td th:text="${orderDTO.buyerName}"></td>
-                    <td th:text="${orderDTO.buyerPhone}"></td>
-                    <td th:text="${orderDTO.buyerAddress}"></td>
-                    <td th:text="${orderDTO.orderAmount}"></td>
-                    <td th:text="${orderDTO.getOrderStatusEnum().message}"></td>
-                    <td th:text="${orderDTO.getPayStatusEnum().message}"></td>
-                    <td th:text="${orderDTO.createTime}"></td>
-                    <td><a th:href="@{'/seller/order/detail?orderId='+${orderDTO.orderId}}">详情</a></td>
-                    <td><a th:if="${orderDTO.getOrderStatusEnum().message}=='新订单'"
-                           th:href="@{'/seller/order/cancel?orderId='+${orderDTO.orderId}}">取消</a></td>
-                </tr>
-                </tbody>
-            </table>
+<div id="wrapper" class="toggled">
+    <!--    sidebar-->
+    <div th:replace="@{~/common/nav} :: sidebar"></div>
+
+    <!--content-->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+
+            <div class="row-fluid">
+                <div class="col-md-12 column">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>订单id</th>
+                            <th>姓名</th>
+                            <th>手机号</th>
+                            <th>地址</th>
+                            <th>金额</th>
+                            <th>订单状态</th>
+                            <th>支付状态</th>
+                            <th>创建时间</th>
+                            <th colspan="2">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="orderDTO :${orderDTOPage.content}">
+                            <td th:text="${orderDTO.orderId}"></td>
+                            <td th:text="${orderDTO.buyerName}"></td>
+                            <td th:text="${orderDTO.buyerPhone}"></td>
+                            <td th:text="${orderDTO.buyerAddress}"></td>
+                            <td th:text="${orderDTO.orderAmount}"></td>
+                            <td th:text="${orderDTO.getOrderStatusEnum().message}"></td>
+                            <td th:text="${orderDTO.getPayStatusEnum().message}"></td>
+                            <td th:text="${orderDTO.createTime}"></td>
+                            <td><a th:href="@{'/seller/order/detail?orderId='+${orderDTO.orderId}}">详情</a></td>
+                            <td><a th:if="${orderDTO.getOrderStatusEnum().message}=='新订单'"
+                                   th:href="@{'/seller/order/cancel?orderId='+${orderDTO.orderId}}">取消</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination  pull-right">
+                    <li th:class="${currentPage<=1 ? 'disabled' : ''}">
+                        <a aria-label="Previous"
+                           th:href="@{'/seller/order/list?page='+${currentPage-1}}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="index:${#numbers.sequence(1,orderDTOPage.getTotalPages())}"
+                        th:class="${currentPage==index ? 'disabled' : ''}">
+                        <a th:href="@{'/seller/order/list?page='+${index}}" th:text="${index}"></a>
+                    </li>
+                    <li th:class="${currentPage >= orderDTOPage.getTotalPages() ? 'disabled' : ''}">
+                        <a th:href="@{'/seller/order/list?page='+${currentPage+1}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination  pull-right">
-                <li th:class="${currentPage<=1 ? 'disabled' : ''}">
-                    <a aria-label="Previous"
-                       th:href="@{'/seller/order/list?page='+${currentPage-1}}">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li th:each="index:${#numbers.sequence(1,orderDTOPage.getTotalPages())}"
-                    th:class="${currentPage==index ? 'disabled' : ''}">
-                    <a th:href="@{'/seller/order/list?page='+${index}}" th:text="${index}"></a>
-                </li>
-                <li th:class="${currentPage >= orderDTOPage.getTotalPages() ? 'disabled' : ''}">
-                    <a th:href="@{'/seller/order/list?page='+${currentPage+1}}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </div>
 </body>
