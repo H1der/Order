@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>订单列表</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-theme.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div id="wrapper" class="toggled">
+    <!--    sidebar-->
+    <div th:replace="@{~/common/nav} :: sidebar"></div>
+
+    <!--content-->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+
+            <div class="row-fluid">
+                <div class="col-md-12 column">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>商品id</th>
+                            <th>名称</th>
+                            <th>图片</th>
+                            <th>单价</th>
+                            <th>库存</th>
+                            <th>描述</th>
+                            <th>类目</th>
+                            <th>创建时间</th>
+                            <th>修改时间</th>
+                            <th colspan="2">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="productInfo :${productInfoPage.content}">
+                            <td th:text="${productInfo.productId}"></td>
+                            <td th:text="${productInfo.productName}"></td>
+                            <td><img height="100" width="100" th:src="${productInfo.productIcon}"></td>
+                            <td th:text="${productInfo.productPrice}"></td>
+                            <td th:text="${productInfo.productStock}"></td>
+                            <td th:text="${productInfo.productDescription}"></td>
+                            <td th:text="${productInfo.categoryType}"></td>
+                            <td th:text="${productInfo.createTime}"></td>
+                            <td th:text="${productInfo.updateTime}"></td>
+                            <td><a th:href="@{'/seller/product/index?productId='+${productInfo.productId}}">修改</a></td>
+                            <td th:switch="${productInfo.getProductStatusEnum().message}">
+                                <a th:case="上架"
+                                   th:href="@{'/seller/order/off_sale?productId='+${productInfo.productId}}">下架</a>
+                                <a th:case="下架"
+                                   th:href="@{'/seller/order/on_sale?productId='+${productInfo.productId}}">上架</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination  pull-right">
+                    <li th:class="${currentPage<=1 ? 'disabled' : ''}">
+                        <a aria-label="Previous"
+                           th:href="@{'/seller/order/list?page='+${currentPage-1}}">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:each="index:${#numbers.sequence(1,productInfoPage.getTotalPages())}"
+                        th:class="${currentPage==index ? 'disabled' : ''}">
+                        <a th:href="@{'/seller/order/list?page='+${index}}" th:text="${index}"></a>
+                    </li>
+                    <li th:class="${currentPage >= productInfoPage.getTotalPages() ? 'disabled' : ''}">
+                        <a th:href="@{'/seller/order/list?page='+${currentPage+1}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>
