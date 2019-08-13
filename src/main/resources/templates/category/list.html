@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>订单列表</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap-theme.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<div id="wrapper" class="toggled">
+    <!--    sidebar-->
+    <div th:replace="@{~/common/nav} :: sidebar"></div>
+
+    <!--content-->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+
+            <div class="row-fluid">
+                <div class="col-md-12 column">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>类目id</th>
+                            <th>名字</th>
+                            <th>type</th>
+                            <th>创建时间</th>
+                            <th>修改时间</th>
+                            <th colspan="2">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="category :${categoryList}">
+                            <td th:text="${category.categoryId}"></td>
+                            <td th:text="${category.categoryName}"></td>
+                            <td th:text="${category.categoryType}"></td>
+                            <td th:text="${category.createTime}"></td>
+                            <td th:text="${category.updateTime}"></td>
+                            <td><a th:href="@{'/seller/category/index?categoryId='+${category.categoryId}}">修改</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
