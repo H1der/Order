@@ -1,16 +1,21 @@
 package com.hider.order.controller;
 
+import com.hider.order.dataobject.ProductCategory;
 import com.hider.order.dataobject.ProductInfo;
 import com.hider.order.exception.SellException;
+import com.hider.order.service.CategoryService;
 import com.hider.order.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * 卖家端商品
@@ -21,6 +26,9 @@ public class SellerProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     /**
      * 列表
@@ -80,6 +88,21 @@ public class SellerProductController {
         }
         model.addAttribute("url", "/order/seller/product/list");
         return "common/success";
+
+    }
+
+    @GetMapping("/index")
+    public String index(@RequestParam(value = "productId", required = false) String productId, Model model) {
+        if (!StringUtils.isEmpty(productId)) {
+            ProductInfo productInfo = productService.findById(productId);
+            model.addAttribute("productInfo", productInfo);
+        }
+        //查询所有类目
+        List<ProductCategory> categoryList = categoryService.findAll();
+        model.addAttribute("categoryList", categoryList);
+
+        return "product/index";
+
 
     }
 }
