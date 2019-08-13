@@ -3,18 +3,24 @@ package com.hider.order.controller;
 import com.hider.order.dataobject.ProductCategory;
 import com.hider.order.dataobject.ProductInfo;
 import com.hider.order.exception.SellException;
+import com.hider.order.form.ProductForm;
 import com.hider.order.service.CategoryService;
 import com.hider.order.service.ProductService;
+import com.hider.order.utils.KeyUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -102,7 +108,39 @@ public class SellerProductController {
         model.addAttribute("categoryList", categoryList);
 
         return "product/index";
+    }
 
-
+    /**
+     * 保存/更新
+     *
+     * @param form
+     * @param bindingResult
+     * @param model
+     * @return
+     */
+    @PostMapping("/save")
+    public String save(@Valid ProductForm form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("msg", bindingResult.getFieldError().getDefaultMessage());
+            model.addAttribute("url", "/order/seller/product/index");
+            return "common/error";
+        }
+        ProductInfo productInfo = new ProductInfo();
+        try {
+            //如果getProductId为空,说明是新增
+            if (!StringUtils.isEmpty(form.getProductId())) {
+                productInfo = productService.findById(form.getProductId());
+            } else {
+                form.setProductId(KeyUtil.genUniqueKey());
+            }
+            BeanUtils.copyProperties(form, productInfo);
+            productService.save(productInfo);
+        } catch (SellException e) {
+            model.addAttribute("msg", e.getMessage());
+            model.addAttribute("url", "/order/seller/product/index");
+            return "common/error";
+        }
+        model.addAttribute("url", "/order/seller/product/list");
+        return "common/success";
     }
 }
