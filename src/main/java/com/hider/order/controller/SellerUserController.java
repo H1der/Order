@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -43,8 +45,18 @@ public class SellerUserController {
     }
 
     @GetMapping("/logout")
-    public void logout() {
-
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response,
+                         Model model) {
+        //1.从cookie查询
+        Cookie cookie = CookieUtil.get(request, CookieConstant.TOKEN);
+        if (cookie != null) {
+            //2.清除cookie
+            CookieUtil.set(response, CookieConstant.TOKEN, null, 0);
+        }
+        model.addAttribute(ResultEnum.LOGOUT_SUCCESS);
+        model.addAttribute("url", "/order/seller/order/list");
+        return "common/success";
     }
 
 }
