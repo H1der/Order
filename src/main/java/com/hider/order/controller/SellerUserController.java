@@ -30,7 +30,7 @@ public class SellerUserController {
         //1.openid与数据库匹配
         SellerInfo sellerInfo = sellerService.findSellerInfoByOpenid(openid);
         if (sellerInfo == null) {
-            model.addAttribute("msg", ResultEnum.LOGIN_FAIL);
+            model.addAttribute("msg", ResultEnum.LOGIN_FAIL.getMessage());
             model.addAttribute("url", "/order/seller/order/list");
             return "common/error";
         }
@@ -54,7 +54,7 @@ public class SellerUserController {
             //2.清除cookie
             CookieUtil.set(response, CookieConstant.TOKEN, null, 0);
         }
-        model.addAttribute(ResultEnum.LOGOUT_SUCCESS);
+        model.addAttribute("msg", ResultEnum.LOGOUT_SUCCESS.getMessage());
         model.addAttribute("url", "/order/seller/order/list");
         return "common/success";
     }
